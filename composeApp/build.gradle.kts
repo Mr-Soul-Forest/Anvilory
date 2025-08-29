@@ -19,9 +19,9 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     jvm()
-    
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         outputModuleName.set("composeApp")
@@ -41,7 +41,7 @@ kotlin {
         }
         binaries.executable()
     }
-    
+
     sourceSets {
         androidMain.dependencies {
             implementation(compose.preview)
@@ -76,7 +76,7 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
     }
     packaging {
         resources {
@@ -103,7 +103,24 @@ compose.desktop {
         mainClass = "forgeofovorldule.anvilory.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(
+                *when (org.gradle.internal.os.OperatingSystem.current()) {
+                    org.gradle.internal.os.OperatingSystem.LINUX -> arrayOf(
+                        TargetFormat.Deb,
+                        TargetFormat.AppImage,
+                    )
+
+                    org.gradle.internal.os.OperatingSystem.MAC_OS -> arrayOf(
+                        TargetFormat.Dmg,
+                        TargetFormat.Pkg
+                    )
+
+                    else -> arrayOf( //Windows
+                        TargetFormat.Msi,
+                        TargetFormat.Exe
+                    )
+                }
+            )
             packageName = "forgeofovorldule.anvilory"
             packageVersion = "1.0.0"
         }
