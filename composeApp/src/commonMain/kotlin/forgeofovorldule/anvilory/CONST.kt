@@ -10,3 +10,5 @@ enum class AppStatus {
 }
 
 var languages: Languages = Languages.EN
+
+var plots = mutableListOf(Plot())

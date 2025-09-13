@@ -7,4 +7,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Preview
 fun App(viewModel: AppViewModel) {
     val appStatus by viewModel.appStatus.collectAsState()
+
+    when (appStatus) {
+        AppStatus.LOADING -> LoadingContent(viewModel)
+        else -> LoadingContent(viewModel)
+    }
 }
