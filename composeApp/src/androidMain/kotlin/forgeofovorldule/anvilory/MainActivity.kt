@@ -13,7 +13,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            App()
+            val viewModel = remember { AppViewModel() }
+
+            App(viewModel)
         }
     }
 }
