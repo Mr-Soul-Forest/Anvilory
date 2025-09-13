@@ -8,3 +8,5 @@ enum class AppStatus {
     PLOT,
     CHARTER
 }
+
+var languages: Languages = Languages.EN
