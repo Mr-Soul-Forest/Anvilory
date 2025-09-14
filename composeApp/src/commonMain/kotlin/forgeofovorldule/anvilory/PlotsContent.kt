@@ -13,7 +13,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,7 +26,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -116,20 +123,7 @@ fun PlotsContent(viewModel: AppViewModel) {
                             }
                         }
                     }
-                    Box(
-                        modifier = Modifier.size(35.6.dp)
-                            .background(UIC_extra_light, RoundedCornerShape(35.6.dp))
-                            .clickable {},
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "+",
-                            color = UIC_light,
-                            fontWeight = FontWeight.Normal,
-                            fontFamily = JetBrainsFont(),
-                            fontSize = 30.sp
-                        )
-                    }
+                    CreatePlotDialog(viewModel)
                 }
             }
             Column(
@@ -183,6 +177,7 @@ private fun OnePlotBlock(plot: Plot) {
                     fontSize = 14.4.sp,
                 )
             }
+
             Box(
                 modifier = Modifier.height(25.2.dp)
                     .background(UIC_light, RoundedCornerShape(12.6.dp))
@@ -203,6 +198,7 @@ private fun OnePlotBlock(plot: Plot) {
                     modifier = Modifier.padding(horizontal = 12.6.dp)
                 )
             }
+
         }
         Column(
             verticalArrangement = Arrangement.spacedBy(2.dp)
@@ -244,5 +240,308 @@ private fun OnePlotBlock(plot: Plot) {
                 }
             }
         }
+    }
+}
+
+private enum class TypesOfChangedParams {
+    TITLE,
+    DESCRIPTION,
+    TYPE,
+    NONE
+}
+
+@Composable
+private fun CreatePlotDialog(viewModel: AppViewModel) {
+    var show by remember { mutableStateOf(false) }
+    Box(
+        modifier = Modifier.size(35.6.dp)
+            .background(UIC_extra_light, RoundedCornerShape(35.6.dp))
+            .clickable { show = true },
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = "+",
+            color = UIC_light,
+            fontWeight = FontWeight.Normal,
+            fontFamily = JetBrainsFont(),
+            fontSize = 30.sp
+        )
+    }
+
+    var plot by remember { mutableStateOf(Plot()) }
+    var plotTitle by remember { mutableStateOf(plot.title) }
+    var plotDescription by remember { mutableStateOf(plot.description) }
+    var plotType by remember { mutableStateOf(plot.typeOfPlot) }
+    var editNow by remember { mutableStateOf(TypesOfChangedParams.NONE) }
+
+    if (show) {
+        AlertDialog(
+            containerColor = UIC_light,
+            onDismissRequest = { show = false },
+            title = {
+                Text(
+                    text = ts_Create_a_plot,
+                    color = UIC,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    fontWeight = FontWeight.ExtraBold,
+                    fontFamily = JetBrainsFont(),
+                    fontSize = 19.2.sp
+                )
+            },
+            text = {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(15.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.Start,
+                        verticalArrangement = Arrangement.spacedBy(10.4.dp),
+                        modifier = Modifier.height(201.6.dp)
+                            .fillMaxWidth()
+                            .background(UIC_extra_light, RoundedCornerShape(18.8.dp))
+                            .padding(18.8.dp)
+                            .clickable { editNow = TypesOfChangedParams.NONE }
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.Bottom,
+                                modifier = Modifier.weight(0.66f)
+                            ) {
+                                Text(
+                                    text = plot.title + " ",
+                                    color = UIC,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    fontWeight = FontWeight.ExtraBold,
+                                    fontFamily = JetBrainsFont(),
+                                    fontSize = 19.2.sp,
+                                    modifier = Modifier.weight(1f)
+                                        .clickable { editNow = TypesOfChangedParams.TITLE }
+                                )
+                                Text(
+                                    text = "-> " + if (plot.typeOfPlot == TypeOfPlot.STORY) ts_story else ts_movie,
+                                    color = UIC,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    fontWeight = FontWeight.ExtraLight,
+                                    fontFamily = JetBrainsFont(),
+                                    fontSize = 14.4.sp,
+                                    modifier = Modifier.clickable { editNow = TypesOfChangedParams.TYPE }
+                                )
+                            }
+                        }
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(2.dp),
+                            modifier = Modifier.clickable { editNow = TypesOfChangedParams.DESCRIPTION }
+                        ) {
+                            Text(
+                                text = "$ts_Description:",
+                                color = UIC_light,
+                                overflow = TextOverflow.Ellipsis,
+                                fontWeight = FontWeight.ExtraBold,
+                                fontFamily = JetBrainsFont(),
+                                fontSize = 13.2.sp
+                            )
+                            Text(
+                                text = plot.description,
+                                color = UIC_light,
+                                overflow = TextOverflow.Ellipsis,
+                                fontWeight = FontWeight.Normal,
+                                fontFamily = JetBrainsFont(),
+                                fontSize = 12.8.sp
+                            )
+                            for (chapter in plot.chapters) {
+                                Text(
+                                    text = "${chapter.title}:",
+                                    color = UIC_light,
+                                    overflow = TextOverflow.Ellipsis,
+                                    fontWeight = FontWeight.ExtraBold,
+                                    fontFamily = JetBrainsFont(),
+                                    fontSize = 13.2.sp
+                                )
+                                for (pair in chapter.pairs) {
+                                    Text(
+                                        text = pair.text,
+                                        color = UIC_light,
+                                        overflow = TextOverflow.Ellipsis,
+                                        fontWeight = FontWeight.Normal,
+                                        fontFamily = JetBrainsFont(),
+                                        fontSize = 12.8.sp
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    Text(
+                        text = "(i) $ts_To_change_an_item__click_",
+                        color = UIC,
+                        fontWeight = FontWeight.Normal,
+                        fontFamily = JetBrainsFont(),
+                        fontSize = 13.2.sp,
+                        textAlign = TextAlign.Center
+                    )
+                    if (editNow != TypesOfChangedParams.NONE) {
+                        Box(
+                            modifier = Modifier.fillMaxWidth()
+                                .background(UIC_extra_light, RoundedCornerShape(18.8.dp))
+                                .padding(18.8.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            when (editNow) {
+                                TypesOfChangedParams.TITLE -> {
+                                    BasicTextField(
+                                        value = plotTitle,
+                                        onValueChange = {
+                                            plotTitle = it
+                                            plot.title = it
+                                        },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        textStyle = TextStyle(
+                                            color = UIC,
+                                            fontWeight = FontWeight.ExtraBold,
+                                            fontFamily = JetBrainsFont(),
+                                            fontSize = 19.2.sp
+                                        ),
+                                        singleLine = true,
+                                        decorationBox = {
+                                            Box(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                it()
+                                            }
+                                        },
+                                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                                    )
+                                }
+
+                                TypesOfChangedParams.DESCRIPTION -> {
+                                    BasicTextField(
+                                        value = plotDescription,
+                                        onValueChange = {
+                                            plotDescription = it
+                                            plot.description = it
+                                        },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        textStyle = TextStyle(
+                                            color = UIC_light,
+                                            fontWeight = FontWeight.Normal,
+                                            fontFamily = JetBrainsFont(),
+                                            fontSize = 12.8.sp
+                                        ),
+                                        singleLine = true,
+                                        decorationBox = {
+                                            Box(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                it()
+                                            }
+                                        },
+                                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                                    )
+                                }
+
+                                TypesOfChangedParams.TYPE -> {
+                                    Column {
+                                        Box(
+                                            modifier = Modifier.background(
+                                                if (plotType == TypeOfPlot.STORY) UIC_light else Color.Transparent,
+                                                RoundedCornerShape(18.8.dp)
+                                            ).fillMaxWidth().clickable {
+                                                plotType = TypeOfPlot.STORY
+                                                plot.typeOfPlot = TypeOfPlot.STORY
+                                            },
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                text = ts_story,
+                                                color = if (plotType == TypeOfPlot.STORY) UIC_extra_light else UIC,
+                                                maxLines = 1,
+                                                overflow = TextOverflow.Ellipsis,
+                                                fontWeight = FontWeight.ExtraLight,
+                                                fontFamily = JetBrainsFont(),
+                                                fontSize = 14.4.sp
+                                            )
+                                        }
+                                        Box(
+                                            modifier = Modifier.background(
+                                                if (plotType == TypeOfPlot.MOVIE) UIC_light else Color.Transparent,
+                                                RoundedCornerShape(18.8.dp)
+                                            ).fillMaxWidth().clickable {
+                                                plotType = TypeOfPlot.MOVIE
+                                                plot.typeOfPlot = TypeOfPlot.MOVIE
+                                            },
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                text = ts_movie,
+                                                color = if (plotType == TypeOfPlot.MOVIE) UIC_extra_light else UIC,
+                                                maxLines = 1,
+                                                overflow = TextOverflow.Ellipsis,
+                                                fontWeight = FontWeight.ExtraLight,
+                                                fontFamily = JetBrainsFont(),
+                                                fontSize = 14.4.sp
+                                            )
+                                        }
+                                    }
+                                }
+
+                                else -> {}
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                Row {
+                    Box(
+                        Modifier.clickable {
+                            show = false
+                            plots.add(plot)
+                            viewModel.setStatus(AppStatus.PLOTS_UPDATER)
+                        }
+                            .background(UIC, RoundedCornerShape(18.8.dp))
+                            .weight(0.5f)
+                            .padding(5.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = ts_Create,
+                            color = UIC_light,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            fontWeight = FontWeight.Normal,
+                            fontFamily = JetBrainsFont(),
+                            fontSize = 16.sp
+                        )
+                    }
+                    Box(
+                        Modifier.clickable {
+                            show = false
+                        }
+                            .background(UIC, RoundedCornerShape(18.8.dp))
+                            .weight(0.5f)
+                            .padding(5.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = ts_Cancel,
+                            color = UIC_light,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            fontWeight = FontWeight.Normal,
+                            fontFamily = JetBrainsFont(),
+                            fontSize = 16.sp
+                        )
+                    }
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }

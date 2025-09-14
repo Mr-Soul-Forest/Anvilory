@@ -10,6 +10,10 @@ var ts_story = "story"
 var ts_movie = "movie"
 var ts_days_ago = "days ago"
 var ts_Description = "Description"
+var ts_Create_a_plot = "Create a plot"
+var ts_To_change_an_item__click_ = "To change an item, click on it"
+var ts_Create = "Create"
+var ts_Cancel = "Cancel"
 
 fun changeLanguage() {
     if (languages == Languages.RU) {
@@ -23,6 +27,10 @@ fun changeLanguage() {
         ts_movie = "фильм"
         ts_days_ago = "дней назад"
         ts_Description = "Описание"
+        ts_Create_a_plot = "Создать сюжет"
+        ts_To_change_an_item__click_ = "Чтобы изменить элемент, нажмите на него"
+        ts_Create = "Создать"
+        ts_Cancel = "Отмена"
     } else {
         ts_New_plot = "New plot"
         ts_This_is_an_example_story = "This is an example story"
@@ -34,5 +42,9 @@ fun changeLanguage() {
         ts_movie = "movie"
         ts_days_ago = "days ago"
         ts_Description = "Description"
+        ts_Create_a_plot = "Create a plot"
+        ts_To_change_an_item__click_ = "To change an item, click on it"
+        ts_Create = "Create"
+        ts_Cancel = "Cancel"
     }
 }
