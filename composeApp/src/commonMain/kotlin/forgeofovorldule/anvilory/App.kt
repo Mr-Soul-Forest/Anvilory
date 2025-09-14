@@ -10,6 +10,6 @@ fun App(viewModel: AppViewModel) {
 
     when (appStatus) {
         AppStatus.LOADING -> LoadingContent(viewModel)
-        else -> LoadingContent(viewModel)
+        else -> PlotsContent(viewModel)
     }
 }

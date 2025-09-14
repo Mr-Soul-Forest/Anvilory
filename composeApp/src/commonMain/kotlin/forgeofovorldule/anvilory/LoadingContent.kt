@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,7 +21,6 @@ import androidx.compose.ui.unit.sp
 import anvilory.composeapp.generated.resources.Res
 import anvilory.composeapp.generated.resources.app_icon
 import org.jetbrains.compose.resources.painterResource
-import kotlin.collections.get
 
 @Composable
 fun LoadingContent(viewModel: AppViewModel) {
@@ -59,4 +59,12 @@ fun LoadingContent(viewModel: AppViewModel) {
             )
         }
     }
+    LaunchedEffect(Unit) {
+        loading(viewModel)
+    }
+}
+
+fun loading (viewModel: AppViewModel) {
+    changeLanguage()
+    viewModel.setStatus(AppStatus.PLOTS)
 }
