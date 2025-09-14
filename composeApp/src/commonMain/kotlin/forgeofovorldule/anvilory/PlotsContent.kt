@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,12 +14,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -63,10 +66,13 @@ fun PlotsContent(viewModel: AppViewModel) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(7.2.dp)
                 ) {
+                    var expended by remember { mutableStateOf(false) }
                     Box(
                         modifier = Modifier.size(35.6.dp)
                             .background(UIC_extra_light, RoundedCornerShape(35.6.dp))
-                            .clickable {},
+                            .clickable {
+                                expended = true
+                            },
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
@@ -76,6 +82,39 @@ fun PlotsContent(viewModel: AppViewModel) {
                             fontFamily = JetBrainsFont(),
                             fontSize = 21.2.sp
                         )
+                    }
+                    DropdownMenu(
+                        expended,
+                        { expended = false },
+                        shape = RoundedCornerShape(24.2.dp),
+                        containerColor = UIC,
+                        modifier = Modifier.padding(horizontal = 9.2.dp)
+                    ) {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(7.2.dp)
+                        ) {
+                            for (languageItem in Languages.entries) {
+                                Box(
+                                    modifier = Modifier.size(35.6.dp)
+                                        .background(UIC_extra_light, RoundedCornerShape(35.6.dp))
+                                        .clickable {
+                                            languages = languageItem
+                                            changeLanguage()
+                                            expended = false
+                                            viewModel.setStatus(AppStatus.LOADING)
+                                        },
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = languageItem.toString(),
+                                        color = UIC_light,
+                                        fontWeight = FontWeight.Normal,
+                                        fontFamily = JetBrainsFont(),
+                                        fontSize = 21.2.sp
+                                    )
+                                }
+                            }
+                        }
                     }
                     Box(
                         modifier = Modifier.size(35.6.dp)
