@@ -162,7 +162,7 @@ private fun OnePlotBlock(index: Int, viewModel: AppViewModel) {
             .clip(RoundedCornerShape(18.8.dp))
             .clickable {
                 edit_plot = index
-                viewModel.setStatus(AppStatus.CHARTERS)
+                viewModel.setStatus(AppStatus.CHAPTERS)
             }
             .padding(18.8.dp)
     ) {

@@ -22,13 +22,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,7 +65,7 @@ fun ChaptersContent(viewModel: AppViewModel) {
             Row(
                 modifier = Modifier.fillMaxWidth()
                     .background(UIC, RoundedCornerShape(47.6.dp))
-                    .padding(start = 19.6.dp, end = 9.2.dp)
+                    .padding(horizontal = 9.2.dp)
                     .height(48.4.dp),
                 horizontalArrangement = Arrangement.spacedBy(7.2.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -76,16 +86,20 @@ fun ChaptersContent(viewModel: AppViewModel) {
                         fontSize = 21.2.sp
                     )
                 }
-                Text(
-                    text = plot.title,
-                    color = UIC_extra_dark,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontFamily = JetBrainsFont(),
-                    fontSize = 19.2.sp,
-                    modifier = Modifier.weight(1f)
-                )
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = plot.title,
+                        color = UIC_extra_dark,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        fontWeight = FontWeight.ExtraBold,
+                        fontFamily = JetBrainsFont(),
+                        fontSize = 19.2.sp,
+                    )
+                }
                 CreateChapterDialog(viewModel)
             }
             Column(
@@ -168,14 +182,6 @@ private fun OneChapterBlock(index: Int, viewModel: AppViewModel) {
         Column(
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
-            Text(
-                text = "$ts_Description:",
-                color = UIC_light,
-                overflow = TextOverflow.Ellipsis,
-                fontWeight = FontWeight.ExtraBold,
-                fontFamily = JetBrainsFont(),
-                fontSize = 13.2.sp
-            )
             for (index in 0..<chapter.parts.size) {
                 Text(
                     text = "$ts_Part $index:",
@@ -200,9 +206,11 @@ private fun OneChapterBlock(index: Int, viewModel: AppViewModel) {
 
 @Composable
 private fun CreateChapterDialog(viewModel: AppViewModel) {
+    var show by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier.size(35.6.dp)
-            .background(UIC_extra_light, RoundedCornerShape(35.6.dp)),
+            .background(UIC_extra_light, RoundedCornerShape(35.6.dp))
+            .clickable { show = true },
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -211,6 +219,187 @@ private fun CreateChapterDialog(viewModel: AppViewModel) {
             fontWeight = FontWeight.Normal,
             fontFamily = JetBrainsFont(),
             fontSize = 30.sp
+        )
+    }
+
+    var chapter by remember { mutableStateOf(Chapter()) }
+    var chapterTitle by remember { mutableStateOf(chapter.title) }
+
+    if (show) {
+        AlertDialog(
+            containerColor = UIC_light,
+            onDismissRequest = { show = false },
+            title = {
+                Text(
+                    text = if (plots[edit_plot].typeOfPlot == TypeOfPlot.STORY) ts_Create_a_chapter else ts_Create_a_series,
+                    color = UIC,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    fontWeight = FontWeight.ExtraBold,
+                    fontFamily = JetBrainsFont(),
+                    fontSize = 19.2.sp
+                )
+            },
+            text = {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(15.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.Start,
+                        verticalArrangement = Arrangement.spacedBy(10.4.dp),
+                        modifier = Modifier.height(201.6.dp)
+                            .fillMaxWidth()
+                            .background(UIC_extra_light, RoundedCornerShape(18.8.dp))
+                            .padding(18.8.dp)
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.Start,
+                            verticalArrangement = Arrangement.spacedBy(10.4.dp),
+                            modifier = Modifier.height(201.6.dp)
+                                .fillMaxWidth()
+                                .background(UIC_extra_light, RoundedCornerShape(18.8.dp))
+                                .clip(RoundedCornerShape(18.8.dp))
+                                .padding(18.8.dp)
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.Bottom,
+                                    modifier = Modifier.weight(0.66f)
+                                ) {
+                                    Text(
+                                        text = "$chapterTitle ",
+                                        color = UIC,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                        fontWeight = FontWeight.ExtraBold,
+                                        fontFamily = JetBrainsFont(),
+                                        fontSize = 19.2.sp,
+                                    )
+                                    Text(
+                                        text = "-> " + chapter.parts.size + " $ts_parts",
+                                        color = UIC,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                        fontWeight = FontWeight.ExtraLight,
+                                        fontFamily = JetBrainsFont(),
+                                        fontSize = 14.4.sp,
+                                    )
+                                }
+                            }
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(2.dp)
+                            ) {
+                                for (index in 0..<chapter.parts.size) {
+                                    Text(
+                                        text = "$ts_Part $index:",
+                                        color = UIC_light,
+                                        overflow = TextOverflow.Ellipsis,
+                                        fontWeight = FontWeight.ExtraBold,
+                                        fontFamily = JetBrainsFont(),
+                                        fontSize = 13.2.sp
+                                    )
+                                    Text(
+                                        text = chapter.parts[index].text,
+                                        color = UIC_light,
+                                        overflow = TextOverflow.Ellipsis,
+                                        fontWeight = FontWeight.Normal,
+                                        fontFamily = JetBrainsFont(),
+                                        fontSize = 12.8.sp
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    Text(
+                        text = ts_Title,
+                        color = UIC,
+                        fontWeight = FontWeight.Normal,
+                        fontFamily = JetBrainsFont(),
+                        fontSize = 13.2.sp,
+                        textAlign = TextAlign.Center
+                    )
+                    Box(
+                        modifier = Modifier.fillMaxWidth()
+                            .background(UIC_extra_light, RoundedCornerShape(18.8.dp))
+                            .padding(18.8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        BasicTextField(
+                            value = chapterTitle,
+                            onValueChange = {
+                                chapterTitle = it
+                                chapter.title = it
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            textStyle = TextStyle(
+                                color = UIC,
+                                fontWeight = FontWeight.ExtraBold,
+                                fontFamily = JetBrainsFont(),
+                                fontSize = 19.2.sp
+                            ),
+                            singleLine = true,
+                            decorationBox = {
+                                Box(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    it()
+                                }
+                            },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                        )
+                    }
+                }
+            },
+            confirmButton = {
+                Row {
+                    Box(
+                        Modifier.clickable {
+                            show = false
+                            plots[edit_plot].chapters.add(chapter)
+                            viewModel.setStatus(AppStatus.CHAPTERS_UPDATER)
+                        }
+                            .background(UIC, RoundedCornerShape(18.8.dp))
+                            .weight(0.5f)
+                            .padding(5.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = ts_Create,
+                            color = UIC_light,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            fontWeight = FontWeight.Normal,
+                            fontFamily = JetBrainsFont(),
+                            fontSize = 16.sp
+                        )
+                    }
+                    Box(
+                        Modifier.clickable {
+                            show = false
+                        }
+                            .background(UIC, RoundedCornerShape(18.8.dp))
+                            .weight(0.5f)
+                            .padding(5.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = ts_Cancel,
+                            color = UIC_light,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            fontWeight = FontWeight.Normal,
+                            fontFamily = JetBrainsFont(),
+                            fontSize = 16.sp
+                        )
+                    }
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }

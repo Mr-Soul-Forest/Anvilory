@@ -25,6 +25,9 @@ var ts_Create = "Create"
 var ts_Cancel = "Cancel"
 var ts_parts = "parts"
 var ts_Part = "Part"
+var ts_Create_a_chapter = "Create a chapter"
+var ts_Title = "Title"
+var ts_Create_a_series = "Create a series"
 
 fun changeLanguage() {
     if (languages == Languages.RU) {
@@ -44,6 +47,9 @@ fun changeLanguage() {
         ts_Cancel = "Отмена"
         ts_parts = "частей"
         ts_Part = "Часть"
+        ts_Create_a_chapter = "Создать главу"
+        ts_Title = "Заголовок"
+        ts_Create_a_series = "Создать серию"
     } else {
         ts_New_plot = "New plot"
         ts_This_is_an_example_story = "This is an example story"
@@ -61,5 +67,8 @@ fun changeLanguage() {
         ts_Cancel = "Cancel"
         ts_parts = "parts"
         ts_Part = "Part"
+        ts_Create_a_chapter = "Create a chapter"
+        ts_Title = "Title"
+        ts_Create_a_series = "Create a series"
     }
 }

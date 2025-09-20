@@ -27,7 +27,13 @@ fun App(viewModel: AppViewModel) {
             }
         }
 
-        AppStatus.CHARTERS -> ChaptersContent(viewModel)
+        AppStatus.CHAPTERS -> ChaptersContent(viewModel)
+        AppStatus.CHAPTERS_UPDATER -> {
+            ChaptersContent(viewModel)
+            LaunchedEffect(Unit) {
+                viewModel.setStatus(AppStatus.CHAPTERS)
+            }
+        }
 
         else -> PlotsContent(viewModel)
     }
