@@ -244,9 +244,9 @@ private fun OnePlotBlock(index: Int, viewModel: AppViewModel) {
                     fontFamily = JetBrainsFont(),
                     fontSize = 13.2.sp
                 )
-                for (pair in chapter.pairs) {
+                for (part in chapter.parts) {
                     Text(
-                        text = pair.text,
+                        text = part.text,
                         color = UIC_light,
                         overflow = TextOverflow.Ellipsis,
                         fontWeight = FontWeight.Normal,
@@ -379,7 +379,7 @@ private fun CreatePlotDialog(viewModel: AppViewModel) {
                                     fontFamily = JetBrainsFont(),
                                     fontSize = 13.2.sp
                                 )
-                                for (pair in chapter.pairs) {
+                                for (pair in chapter.parts) {
                                     Text(
                                         text = pair.text,
                                         color = UIC_light,

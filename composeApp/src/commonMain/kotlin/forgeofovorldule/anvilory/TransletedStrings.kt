@@ -1,3 +1,12 @@
+/**Copyright 2025 Forge-of-Ovorldule (https://github.com/Forge-of-Ovorldule) and Mr-Soul-Forest (https://github.com/Mr-Soul-Forest)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 package forgeofovorldule.anvilory
 
 var ts_New_plot = "New plot"
@@ -14,6 +23,8 @@ var ts_Create_a_plot = "Create a plot"
 var ts_To_change_an_item__click_ = "To change an item, click on it"
 var ts_Create = "Create"
 var ts_Cancel = "Cancel"
+var ts_parts = "parts"
+var ts_Part = "Part"
 
 fun changeLanguage() {
     if (languages == Languages.RU) {
@@ -31,6 +42,8 @@ fun changeLanguage() {
         ts_To_change_an_item__click_ = "Чтобы изменить элемент, нажмите на него"
         ts_Create = "Создать"
         ts_Cancel = "Отмена"
+        ts_parts = "частей"
+        ts_Part = "Часть"
     } else {
         ts_New_plot = "New plot"
         ts_This_is_an_example_story = "This is an example story"
@@ -46,5 +59,7 @@ fun changeLanguage() {
         ts_To_change_an_item__click_ = "To change an item, click on it"
         ts_Create = "Create"
         ts_Cancel = "Cancel"
+        ts_parts = "parts"
+        ts_Part = "Part"
     }
 }

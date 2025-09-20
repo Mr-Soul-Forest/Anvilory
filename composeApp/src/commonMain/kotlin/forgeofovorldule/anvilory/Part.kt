@@ -1,5 +1,5 @@
 package forgeofovorldule.anvilory
 
-class Pair() {
+class Part() {
     var text = ""
 }
