@@ -126,7 +126,10 @@ private fun OneChapterBlock(index: Int, viewModel: AppViewModel) {
             .fillMaxWidth()
             .background(UIC_extra_light, RoundedCornerShape(18.8.dp))
             .clip(RoundedCornerShape(18.8.dp))
-            .clickable {}
+            .clickable {
+                edit_chapter = index
+                viewModel.setStatus(AppStatus.PARTS)
+            }
             .padding(18.8.dp)
     ) {
         Row(

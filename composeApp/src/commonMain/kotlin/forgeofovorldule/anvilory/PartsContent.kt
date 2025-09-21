@@ -9,7 +9,11 @@
 
 package forgeofovorldule.anvilory
 
-enum class TypeOfPlot {
-    STORY,
-    MOVIE
+import androidx.compose.runtime.Composable
+
+var edit_chapter = 0
+
+@Composable
+fun PartsContent(viewModel: AppViewModel) {
+
 }

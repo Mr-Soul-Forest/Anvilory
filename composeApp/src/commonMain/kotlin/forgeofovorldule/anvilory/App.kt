@@ -35,6 +35,13 @@ fun App(viewModel: AppViewModel) {
             }
         }
 
-        else -> PlotsContent(viewModel)
+        AppStatus.PARTS -> PartsContent(viewModel)
+        AppStatus.PARTS_UPDATER -> {
+            PartsContent(viewModel)
+            LaunchedEffect(Unit) {
+                viewModel.setStatus(AppStatus.PARTS)
+            }
+        }
+
     }
 }

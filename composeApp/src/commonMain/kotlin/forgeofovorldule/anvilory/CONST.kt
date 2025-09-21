@@ -17,7 +17,8 @@ enum class AppStatus {
     PLOTS_UPDATER,
     CHAPTERS,
     CHAPTERS_UPDATER,
-    PARTS
+    PARTS,
+    PARTS_UPDATER
 }
 
 var languages: Languages = Languages.EN
