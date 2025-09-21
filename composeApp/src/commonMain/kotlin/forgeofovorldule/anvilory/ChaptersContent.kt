@@ -364,6 +364,8 @@ private fun CreateChapterDialog(viewModel: AppViewModel) {
                         Modifier.clickable {
                             show = false
                             plots[edit_plot].chapters.add(chapter)
+                            plots[edit_plot].lastEdit =
+                                Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
                             viewModel.setStatus(AppStatus.CHAPTERS_UPDATER)
                         }
                             .background(UIC, RoundedCornerShape(18.8.dp))

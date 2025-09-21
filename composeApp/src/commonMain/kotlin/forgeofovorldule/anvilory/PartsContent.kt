@@ -105,6 +105,10 @@ fun PartsContent(viewModel: AppViewModel) {
                         .clickable {
                             plots[edit_plot].chapters[edit_chapter].parts.add(Part())
                             viewModel.setStatus(AppStatus.PARTS_UPDATER)
+                            plots[edit_plot].chapters[edit_chapter].lastEdit =
+                                Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+                            plots[edit_plot].lastEdit =
+                                Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
                         },
                     contentAlignment = Alignment.Center
                 ) {
@@ -198,6 +202,11 @@ private fun OnePartBlock(index: Int) {
             onValueChange = {
                 partText = it
                 plots[edit_plot].chapters[edit_chapter].parts[index].text = it
+                plots[edit_plot].chapters[edit_chapter].parts[index].lastEdit =
+                    Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+                plots[edit_plot].chapters[edit_chapter].lastEdit =
+                    Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+                plots[edit_plot].lastEdit = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
             },
             modifier = Modifier.fillMaxWidth(),
             textStyle = TextStyle(
