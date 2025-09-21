@@ -9,6 +9,12 @@
 
 package forgeofovorldule.anvilory
 
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+
 class Part() {
     var text = ""
+    var lastEdit: LocalDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 }

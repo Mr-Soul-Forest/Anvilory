@@ -28,6 +28,7 @@ var ts_Part = "Part"
 var ts_Create_a_chapter = "Create a chapter"
 var ts_Title = "Title"
 var ts_Create_a_series = "Create a series"
+var ts_words = "words"
 
 fun changeLanguage() {
     if (languages == Languages.RU) {

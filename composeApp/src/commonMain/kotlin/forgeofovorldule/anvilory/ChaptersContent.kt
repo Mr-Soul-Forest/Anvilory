@@ -187,7 +187,7 @@ private fun OneChapterBlock(index: Int, viewModel: AppViewModel) {
         ) {
             for (index in 0..<chapter.parts.size) {
                 Text(
-                    text = "$ts_Part $index:",
+                    text = "$ts_Part ${index + 1}:",
                     color = UIC_light,
                     overflow = TextOverflow.Ellipsis,
                     fontWeight = FontWeight.ExtraBold,
