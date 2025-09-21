@@ -1,3 +1,12 @@
+/**Copyright 2025 Forge-of-Ovorldule (https://github.com/Forge-of-Ovorldule) and Mr-Soul-Forest (https://github.com/Mr-Soul-Forest)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 package forgeofovorldule.anvilory
 
 import androidx.compose.foundation.background
@@ -26,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -132,8 +142,8 @@ fun PlotsContent(viewModel: AppViewModel) {
                 modifier = Modifier.verticalScroll(rememberScrollState())
                     .padding(horizontal = 19.6.dp)
             ) {
-                for (item in plots) {
-                    OnePlotBlock(item)
+                for (item in 0..<plots.size) {
+                    OnePlotBlock(item, viewModel)
                 }
             }
         }
@@ -141,13 +151,19 @@ fun PlotsContent(viewModel: AppViewModel) {
 }
 
 @Composable
-private fun OnePlotBlock(plot: Plot) {
+private fun OnePlotBlock(index: Int, viewModel: AppViewModel) {
+    val plot = plots[index]
     Column(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(10.4.dp),
         modifier = Modifier.height(201.6.dp)
             .fillMaxWidth()
             .background(UIC_extra_light, RoundedCornerShape(18.8.dp))
+            .clip(RoundedCornerShape(18.8.dp))
+            .clickable {
+                edit_plot = index
+                viewModel.setStatus(AppStatus.CHAPTERS)
+            }
             .padding(18.8.dp)
     ) {
         Row(
@@ -228,9 +244,9 @@ private fun OnePlotBlock(plot: Plot) {
                     fontFamily = JetBrainsFont(),
                     fontSize = 13.2.sp
                 )
-                for (pair in chapter.pairs) {
+                for (part in chapter.parts) {
                     Text(
-                        text = pair.text,
+                        text = part.text,
                         color = UIC_light,
                         overflow = TextOverflow.Ellipsis,
                         fontWeight = FontWeight.Normal,
@@ -363,7 +379,7 @@ private fun CreatePlotDialog(viewModel: AppViewModel) {
                                     fontFamily = JetBrainsFont(),
                                     fontSize = 13.2.sp
                                 )
-                                for (pair in chapter.pairs) {
+                                for (pair in chapter.parts) {
                                     Text(
                                         text = pair.text,
                                         color = UIC_light,
