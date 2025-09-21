@@ -22,13 +22,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -115,7 +123,7 @@ fun PartsContent(viewModel: AppViewModel) {
                 modifier = Modifier.verticalScroll(rememberScrollState())
             ) {
                 for (item in 0..<chapter.parts.size) {
-                    OnePartBlock(item, viewModel)
+                    OnePartBlock(item)
                 }
             }
         }
@@ -123,18 +131,16 @@ fun PartsContent(viewModel: AppViewModel) {
 }
 
 @Composable
-private fun OnePartBlock(index: Int, viewModel: AppViewModel) {
+private fun OnePartBlock(index: Int) {
     val part = plots[edit_plot].chapters[edit_chapter].parts[index]
+    var partText by remember { mutableStateOf(part.text) }
+
     Column(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(10.4.dp),
         modifier = Modifier.fillMaxWidth()
             .background(UIC_extra_light, RoundedCornerShape(18.8.dp))
             .clip(RoundedCornerShape(18.8.dp))
-            .clickable {
-                edit_chapter = index
-                viewModel.setStatus(AppStatus.PARTS)
-            }
             .padding(18.8.dp)
     ) {
         Row(
@@ -146,7 +152,7 @@ private fun OnePartBlock(index: Int, viewModel: AppViewModel) {
                 modifier = Modifier.weight(0.66f)
             ) {
                 Text(
-                    text = "$ts_Part " + (index + 1),
+                    text = "$ts_Part " + (index + 1) + " ",
                     color = UIC,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -187,13 +193,34 @@ private fun OnePartBlock(index: Int, viewModel: AppViewModel) {
                 )
             }
         }
-        Text(
-            text = part.text,
-            color = UIC_light,
-            overflow = TextOverflow.Ellipsis,
-            fontWeight = FontWeight.Normal,
-            fontFamily = JetBrainsFont(),
-            fontSize = 12.8.sp
+        BasicTextField(
+            value = partText,
+            onValueChange = {
+                partText = it
+                plots[edit_plot].chapters[edit_chapter].parts[index].text = it
+            },
+            modifier = Modifier.fillMaxWidth(),
+            textStyle = TextStyle(
+                color = UIC_light,
+                fontWeight = FontWeight.Normal,
+                fontFamily = JetBrainsFont(),
+                fontSize = 12.8.sp
+            ),
+            singleLine = false,
+            decorationBox = {
+                if (partText.isNotEmpty())
+                    it()
+                else
+                    Text(
+                        text = ts_Empty,
+                        color = UIC_light,
+                        overflow = TextOverflow.Ellipsis,
+                        fontWeight = FontWeight.Normal,
+                        fontFamily = JetBrainsFont(),
+                        fontSize = 12.8.sp
+                    )
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
     }
 }
