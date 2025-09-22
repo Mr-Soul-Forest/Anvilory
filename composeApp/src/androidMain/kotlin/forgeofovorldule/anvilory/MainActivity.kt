@@ -18,6 +18,11 @@ class MainActivity : ComponentActivity() {
             App(viewModel)
         }
     }
+
+    override fun onStop() {
+        super.onStop()
+        saveAllValues()
+    }
 }
 
 @Preview

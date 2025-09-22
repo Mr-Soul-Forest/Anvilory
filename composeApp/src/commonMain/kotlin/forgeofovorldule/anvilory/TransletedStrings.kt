@@ -32,7 +32,7 @@ var ts_words = "words"
 var ts_Empty = "Empty"
 
 fun changeLanguage() {
-    if (languages == Languages.RU) {
+    if (language == Languages.RU) {
         ts_New_plot = "Новый сюжет"
         ts_This_is_an_example_story = "Это пример истории"
         ts_New_chapter = "Новая глава"

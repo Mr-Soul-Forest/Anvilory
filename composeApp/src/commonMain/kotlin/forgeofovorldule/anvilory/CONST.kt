@@ -21,6 +21,6 @@ enum class AppStatus {
     PARTS_UPDATER
 }
 
-var languages: Languages = Languages.EN
+var language: Languages = Languages.EN
 
 var plots = mutableListOf(Plot())

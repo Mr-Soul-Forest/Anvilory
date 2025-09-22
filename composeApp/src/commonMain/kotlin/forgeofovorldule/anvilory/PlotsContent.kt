@@ -93,7 +93,7 @@ fun PlotsContent(viewModel: AppViewModel) {
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = languages.toString(),
+                            text = language.toString(),
                             color = UIC_light,
                             fontWeight = FontWeight.Normal,
                             fontFamily = JetBrainsFont(),
@@ -115,7 +115,7 @@ fun PlotsContent(viewModel: AppViewModel) {
                                     modifier = Modifier.size(35.6.dp)
                                         .background(UIC_extra_light, RoundedCornerShape(35.6.dp))
                                         .clickable {
-                                            languages = languageItem
+                                            language = languageItem
                                             changeLanguage()
                                             expended = false
                                             viewModel.setStatus(AppStatus.LOADING)
